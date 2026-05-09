@@ -603,7 +603,9 @@ export type Database = {
         ];
       };
     };
-    Views: Record<string, unknown>;
+    Views: {
+      [_ in never]: never;
+    };
     Functions: {
       set_updated_at: {
         Args: Record<PropertyKey, never>;

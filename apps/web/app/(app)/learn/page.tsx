@@ -48,7 +48,7 @@ export default async function LearnPage({ searchParams }: PageProps) {
     .order('order_index', { ascending: true })
 
   if (styleFilter) lessonsQuery = lessonsQuery.eq('style_id', styleFilter)
-  if (difficultyFilter) lessonsQuery = lessonsQuery.eq('difficulty', difficultyFilter)
+  if (difficultyFilter) lessonsQuery = lessonsQuery.eq('difficulty', difficultyFilter as 'entry' | 'beginner' | 'intermediate' | 'advanced')
 
   const [{ data: stylesData }, { data: lessonsData }] = await Promise.all([
     supabase.from('dance_styles').select('id, name').order('name'),
