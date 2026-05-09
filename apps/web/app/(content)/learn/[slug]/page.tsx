@@ -65,7 +65,6 @@ export default async function LessonPage({ params }: PageProps) {
     dance_styles: { name: string; slug: string } | null
   }
 
-  // Fetch user's progress and related lessons in parallel
   const [{ data: progressData }, { data: relatedData }] = await Promise.all([
     user
       ? supabase
@@ -141,6 +140,30 @@ export default async function LessonPage({ params }: PageProps) {
           />
         )}
       </div>
+
+      {/* Sign-up nudge for guests */}
+      {!user && (
+        <div className="bg-bg-elevated rounded-2xl border border-border p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex-1">
+            <p className="font-semibold text-text-primary">Track your progress</p>
+            <p className="text-sm text-text-secondary mt-0.5">Create a free account to mark lessons complete and save your journey.</p>
+          </div>
+          <div className="flex gap-2 flex-shrink-0">
+            <Link
+              href="/login"
+              className="px-4 py-2 rounded-lg text-sm font-medium border border-border text-text-secondary hover:text-text-primary hover:border-accent-primary transition-colors"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signup"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-accent-primary text-text-inverse hover:opacity-90 transition-opacity"
+            >
+              Sign up free
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Description */}
       {lesson.description && (

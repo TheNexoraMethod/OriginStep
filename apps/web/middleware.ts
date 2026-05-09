@@ -1,19 +1,23 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC_ROUTES = new Set(['/login', '/signup'])
+const PRIVATE_PREFIXES = ['/dashboard', '/profile', '/journey', '/mentor-dashboard', '/admin', '/onboarding']
+const AUTH_ROUTES = new Set(['/login', '/signup'])
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  const isPrivate = PRIVATE_PREFIXES.some(p => pathname === p || pathname.startsWith(p + '/'))
+  const isAuthRoute = AUTH_ROUTES.has(pathname)
+
+  // Fast path: purely public, no session check needed
+  if (!isPrivate && !isAuthRoute) return NextResponse.next()
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // If env vars are missing, treat as unauthenticated
   if (!supabaseUrl || !supabaseKey) {
-    if (!PUBLIC_ROUTES.has(pathname)) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+    if (isPrivate) return NextResponse.redirect(new URL('/login', request.url))
     return NextResponse.next()
   }
 
@@ -39,18 +43,15 @@ export async function middleware(request: NextRequest) {
 
     const { data: { session } } = await supabase.auth.getSession()
 
-    if (!session && !PUBLIC_ROUTES.has(pathname)) {
+    if (!session && isPrivate) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if (session && PUBLIC_ROUTES.has(pathname)) {
+    if (session && isAuthRoute) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   } catch {
-    // On any auth error, allow public routes and redirect others to login
-    if (!PUBLIC_ROUTES.has(pathname)) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+    if (isPrivate) return NextResponse.redirect(new URL('/login', request.url))
   }
 
   return response
