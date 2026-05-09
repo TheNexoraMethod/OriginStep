@@ -25,19 +25,18 @@ const FEATURES = [
 ]
 
 const FREE_FEATURES = [
-  'Browse the full lesson library',
-  'Explore all dance styles',
-  'View instructor profiles',
-  'Watch lesson previews',
+  'Full access to all tutorial videos',
+  'Browse and train in every dance style',
+  'Save favourites and track your history',
+  'Keep a training journal',
+  'Connect with mentors (mentors set their own rates)',
 ]
 
 const PRO_FEATURES = [
-  'Everything in Free',
-  'Mark lessons as complete',
-  'Save lessons to your journey',
-  'Book 1-on-1 mentor sessions',
-  'Personalised progress dashboard',
-  'Early access to new content',
+  'Smart progress tracking and stats',
+  'Session reminders and streaks',
+  'Training plans from mentors',
+  'Early access to new styles and features',
 ]
 
 export default function HomePage() {
@@ -99,19 +98,19 @@ export default function HomePage() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-24">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold">Simple, honest pricing</h2>
-          <p className="mt-3 text-text-secondary">Start for free. Upgrade when you're ready to go deeper.</p>
+          <p className="mt-3 text-text-secondary">Create a free account to unlock your dance journey.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Free tier */}
           <div className="bg-bg-elevated rounded-2xl border border-border p-8 flex flex-col">
             <div>
-              <p className="text-sm font-medium text-text-tertiary uppercase tracking-wide">Free</p>
+              <p className="text-sm font-medium text-text-tertiary uppercase tracking-wide">Free account</p>
               <div className="mt-2 flex items-end gap-1">
                 <span className="text-4xl font-bold text-text-primary">$0</span>
                 <span className="text-text-secondary mb-1">/ forever</span>
               </div>
-              <p className="mt-3 text-sm text-text-secondary">Everything you need to explore and discover.</p>
+              <p className="mt-3 text-sm text-text-secondary">Everything you need to start and grow your dance journey.</p>
             </div>
             <ul className="mt-8 space-y-3 flex-1">
               {FREE_FEATURES.map(f => (
@@ -131,16 +130,9 @@ export default function HomePage() {
 
           {/* Pro tier */}
           <div className="bg-accent-primary rounded-2xl p-8 flex flex-col relative overflow-hidden">
-            <div className="absolute top-4 right-4 px-2.5 py-0.5 bg-white/20 rounded-full text-xs font-semibold text-white">
-              Coming soon
-            </div>
             <div>
-              <p className="text-sm font-medium text-white/70 uppercase tracking-wide">Pro</p>
-              <div className="mt-2 flex items-end gap-1">
-                <span className="text-4xl font-bold text-white">$12</span>
-                <span className="text-white/70 mb-1">/ month</span>
-              </div>
-              <p className="mt-3 text-sm text-white/80">For serious dancers ready to invest in their growth.</p>
+              <p className="text-sm font-medium text-white/70 uppercase tracking-wide">PRO (Coming soon)</p>
+              <p className="mt-3 text-sm text-white/80">Unlock advanced tracking and mobile-first training tools.</p>
             </div>
             <ul className="mt-8 space-y-3 flex-1">
               {PRO_FEATURES.map(f => (
@@ -150,12 +142,7 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-            <button
-              disabled
-              className="mt-8 block w-full text-center px-5 py-3 rounded-xl bg-white/20 text-white font-semibold text-sm cursor-not-allowed opacity-70"
-            >
-              Notify me when available
-            </button>
+            <p className="mt-8 text-xs text-white/60 text-center">Launching with the OriginStep mobile app.</p>
           </div>
         </div>
       </section>
