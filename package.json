@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "node scripts/patch-supabase-types.js",
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",

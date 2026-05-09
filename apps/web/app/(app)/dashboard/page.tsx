@@ -27,32 +27,10 @@ export default async function DashboardPage() {
     supabase.from('saved_items').select('item_type').eq('user_id', user!.id),
   ])
 
-  const profile = profileResult.data as {
-    full_name: string | null
-    dance_level: string | null
-    onboarding_completed: boolean
-  } | null
-
-  const styles = (stylesResult.data ?? []) as {
-    id: string
-    slug: string
-    name: string
-    category: string
-    thumbnail_url: string | null
-    summary: string
-  }[]
-
-  const lessons = (lessonsResult.data ?? []) as {
-    id: string
-    title: string
-    slug: string
-    duration_seconds: number
-    difficulty: string
-    instructor_name: string
-    thumbnail_url: string | null
-  }[]
-
-  const saved = (savedResult.data ?? []) as { item_type: string }[]
+  const profile = profileResult.data
+  const styles = stylesResult.data ?? []
+  const lessons = lessonsResult.data ?? []
+  const saved = savedResult.data ?? []
 
   const firstName = profile?.full_name?.split(' ')[0] || 'there'
   const savedCounts = {

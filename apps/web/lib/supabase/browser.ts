@@ -1,10 +1,11 @@
-import { createBrowserClient } from '@originstep/supabase/browser'
+import { createBrowserClient as _createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/lib/db.types'
 
-let client: ReturnType<typeof createBrowserClient> | null = null
+let client: ReturnType<typeof _createBrowserClient<Database>> | null = null
 
 export function getClient() {
   if (!client) {
-    client = createBrowserClient(
+    client = _createBrowserClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     )
