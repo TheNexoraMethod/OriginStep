@@ -4,12 +4,23 @@ import { NextResponse, type NextRequest } from 'next/server'
 const PUBLIC_ROUTES = new Set(['/login', '/signup'])
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // If env vars are missing, treat as unauthenticated
+  if (!supabaseUrl || !supabaseKey) {
+    if (!PUBLIC_ROUTES.has(pathname)) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+    return NextResponse.next()
+  }
+
   let response = NextResponse.next({ request })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll()
@@ -24,18 +35,22 @@ export async function middleware(request: NextRequest) {
           )
         },
       },
-    },
-  )
+    })
 
-  const { data: { user } } = await supabase.auth.getUser()
-  const { pathname } = request.nextUrl
+    const { data: { session } } = await supabase.auth.getSession()
 
-  if (!user && !PUBLIC_ROUTES.has(pathname)) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+    if (!session && !PUBLIC_ROUTES.has(pathname)) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
 
-  if (user && PUBLIC_ROUTES.has(pathname)) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    if (session && PUBLIC_ROUTES.has(pathname)) {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+  } catch {
+    // On any auth error, allow public routes and redirect others to login
+    if (!PUBLIC_ROUTES.has(pathname)) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
   }
 
   return response
