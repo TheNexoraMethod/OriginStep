@@ -50,9 +50,9 @@ export default function HomePage() {
           Free to browse — no account needed
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text-primary leading-tight">
-          Learn to dance from{' '}
+          Be mentored by{' '}
           <span className="text-accent-primary">world-class</span>{' '}
-          instructors
+          movement artists
         </h1>
         <p className="mt-6 text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
           Browse hundreds of video lessons across every dance style. Free to explore, built to grow with you.
